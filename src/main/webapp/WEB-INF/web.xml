@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="https://jakarta.ee/xml/ns/jakartaee"
+	xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+	id="WebApp_ID" version="6.0">
+
+	<display-name>BankApplication</display-name>
+
+	<!-- ================= DB LISTENER ================= -->
+
+	<filter>
+		<filter-name>signFilter</filter-name>
+		<filter-class>com.filter.SignInFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>signFilter</filter-name>
+		<url-pattern>/loginServlet</url-pattern>
+	</filter-mapping>
+	<filter>
+		<filter-name>domainFilter</filter-name>
+		<filter-class>com.filter.DomainAdditionFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>domainFilter</filter-name>
+		<url-pattern>/loginServlet</url-pattern>
+	</filter-mapping>
+
+
+	<listener>
+		<listener-class>com.listener.DAOContextListener</listener-class>
+	</listener>
+
+
+	<!-- ================= DB CONFIG ================= -->
+	<context-param>
+		<param-name>driver</param-name>
+		<param-value>com.mysql.cj.jdbc.Driver</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>url</param-name>
+		<param-value>jdbc:mysql://localhost:3306/shop</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>username</param-name>
+		<param-value>root</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>password</param-name>
+		<param-value>amit</param-value>
+	</context-param>
+
+
+	<servlet>
+		<servlet-name>LoginServlet</servlet-name>
+		<servlet-class>com.Servlet.LoginServlet</servlet-class>
+
+		<init-param>
+			<param-name>loginService</param-name>
+			<param-value>com.ServiceImpl.LoginValidationServiceImpl</param-value>
+		</init-param>
+
+		<init-param>
+			<param-name>daoClass</param-name>
+			<param-value>com.DAOImpl.UserDAOImpl</param-value>
+		</init-param>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>LoginServlet</servlet-name>
+		<url-pattern>/loginServlet</url-pattern>
+	</servlet-mapping>
+
+
+	<servlet>
+		<servlet-name>AccountServlet</servlet-name>
+		<servlet-class>com.Servlet.AccountServlet</servlet-class>
+
+		<init-param>
+			<param-name>accService</param-name>
+			<param-value>com.ServiceImpl.AccountServiceImpl</param-value>
+		</init-param>
+		<init-param>
+			<param-name>daoClass</param-name>
+			<param-value>com.DAOImpl.AccDAOImpl</param-value>
+		</init-param>
+		<init-param>
+			<param-name>transDao</param-name>
+			<param-value>com.DAOImpl.TransDAOImpl</param-value>
+		</init-param>
+		<init-param>
+			<param-name>transService</param-name>
+			<param-value>com.ServiceImpl.TransactionsServiceImpl</param-value>
+		</init-param>
+
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>AccountServlet</servlet-name>
+		<url-pattern>/AccountServlet</url-pattern>
+	</servlet-mapping>
+
+
+	<servlet>
+		<servlet-name>LogoutServlet</servlet-name>
+		<servlet-class>com.Servlet.LogoutServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>LogoutServlet</servlet-name>
+		<url-pattern>/logout</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>TransServlet</servlet-name>
+		<servlet-class>com.Servlet.TransServlet</servlet-class>
+
+		<!-- DAO class -->
+		<init-param>
+			<param-name>transDao</param-name>
+			<param-value>com.DAOImpl.TransDAOImpl</param-value>
+		</init-param>
+
+		<!-- Service class -->
+		<init-param>
+			<param-name>transService</param-name>
+			<param-value>com.ServiceImpl.TransactionsServiceImpl</param-value>
+		</init-param>
+
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>TransServlet</servlet-name>
+		<url-pattern>/TransServlet</url-pattern>
+	</servlet-mapping>
+</web-app>
